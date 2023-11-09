@@ -1,12 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 
-const EditProfile = ({ user, onSave }) => {
-  const [editedUser, setEditedUser] = useState({ ...user });
-
-  // Use useEffect to update editedUser when the user prop changes
+function EditProfile(props) {
+  const { id } = useParams();
+  const [user, setUser] = useState({});
+  const [editedUser, setEditedUser] = useState({
+    username: "",
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  });
+    //  it will save the updated data
   useEffect(() => {
-    setEditedUser({ ...user });
-  }, [user]);
+    fetch(`http://localhost:3000/users/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setUser(data);
+        setEditedUser(data);
+      })
+
+      // to handle errors
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,8 +33,7 @@ const EditProfile = ({ user, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Send a PUT request to update the user's profile
+  //  send a put request 
     try {
       const response = await fetch(`http://localhost:3000/users/${user.id}`, {
         method: 'PUT',
@@ -27,7 +44,6 @@ const EditProfile = ({ user, onSave }) => {
       });
 
       if (response.ok) {
-        onSave(editedUser);
         alert('Profile updated successfully');
       } else {
         alert('Failed to update the profile');
@@ -37,42 +53,66 @@ const EditProfile = ({ user, onSave }) => {
       alert('Failed to update the profile');
     }
   };
-
+  //  basic form create
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Username:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={editedUser.username}
-          onChange={handleChange}
-        />
+    <div className="d-flex w-100 vh-100 justify-content-center align-items-center">
+      <div className="border bg-secondary text-white p-5">
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Username:</label>
+            <input
+              className="form-control"
+              type="text"
+              name="username"
+              value={editedUser.username}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Name:</label>
+            <input
+              className="form-control"
+              type="text"
+              name="name"
+              value={editedUser.name}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Email:</label>
+            <input
+              className="form-control"
+              type="email"
+              name="email"
+              value={editedUser.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Phone:</label>
+            <input
+              className="form-control"
+              type="text"
+              name="phone"
+              value={editedUser.phone}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Address:</label>
+            <input
+              className="form-control"
+              type="text"
+              name="address"
+              value={editedUser.address}
+              onChange={handleChange}
+            />
+          </div>
+          <button type="submit">Save</button>
+        </form>
       </div>
-      <div>
-        <label>Name:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={editedUser.name}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={editedUser.email}
-          onChange={handleChange}
-        />
-      </div>
-      <button type="submit">Save</button>
-    </form>
+    </div>
   );
-};
+}
 
 export default EditProfile;

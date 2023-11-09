@@ -31,13 +31,12 @@ function Login() {
   function loginhandle(e) {
     e.preventDefault();
 
-    // Check if either field is empty or has an error
+    //  if either field is empty or has an error
     if (!email || emailError || !password || passwordError) {
       alert('Please fill in both fields correctly.');
       return;
     }
 
-    // Your login logic here
     alert("Successfully Login");
 
     // Clear the fields after successful login (if needed)
@@ -47,7 +46,7 @@ function Login() {
 
   return (
     <div className="container col-5 text-center mt-5">
-      <form onSubmit={loginhandle} className="border  border-2 pt-4 bg-primary">
+      <form onSubmit={loginhandle} className="border  border-2 pt-4 bg-secondary">
         <label style={{ fontWeight: '600' }}>Please Login Here</label>
         <br /><br />
         <label> Email  Id : </label>
@@ -60,7 +59,7 @@ function Login() {
         <br />
         {passwordError ? <span style={{ color: 'red' }}>Password should contain at least 4 characters</span> : ""}
         <br />
-        <button type="submit" className="btn">Login</button>
+        <button type="submit" className="btn " >Login</button>
       </form>
     </div>
   )

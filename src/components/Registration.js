@@ -39,7 +39,7 @@ function Registration() {
 
   const passwordhandle = (e) => {
     let password = e.target.value;
-    if (password.length < 5) { // Changed to 5 characters
+    if (password.length < 5) { 
       setPasswordError(true);
     } else {
       setPasswordError(false);
@@ -50,13 +50,13 @@ function Registration() {
   const registerhandle = (e) => {
     e.preventDefault();
 
-    // Check if any field is empty or has an error
+    // if any field is empty or has an error
     if (!name || !email || emailError || !phone || phoneError || !password || passwordError) {
       alert('Please fill in all the required fields correctly.');
       return;
     }
 
-    // Your form submission logic here
+    //  form submission logic 
     alert('Form submitted successfully');
   }
 
@@ -86,7 +86,7 @@ function Registration() {
         <br />
         {passwordError ? <span style={{ color: 'red' }}>Password must contain at least 5 characters</span> : ""}
         <br />
-        <button type="submit" className="btn btn-success">Register</button>
+        <button type="submit" className="btn btn-success" >Register</button>
       </form>
     </div>
   );
